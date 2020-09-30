@@ -133,7 +133,7 @@ int main()
 
 	if (Yes == 'S' || Yes == 's')
 	{
-		printf("\n\ NOME: %s", username);
+		printf("\n\n NOME: %s", username);
 	}
 	else
 	{
