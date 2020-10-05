@@ -20,7 +20,7 @@
     Responsavel: eduardo
   - [ ] cadastros de funcionários.
     Responsavel: Chris Ramal
-  - [ ] reclamações e elogios dos clientes.
+  - [ok] reclamações e elogios dos clientes.
     Responsavel: https://github.com/illyaprototype
   - [ ] cancelamento de consultas etc.
     Responsavel: https://github.com/Jefferson-Bueno-Da-Silva
