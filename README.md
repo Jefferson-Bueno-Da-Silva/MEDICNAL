@@ -18,7 +18,7 @@
     Responsavel: R:gabriel
   - [x] cadastros de médicos.
     Responsavel: eduardo
-  - [ ] cadastros de funcionários.
+  - [x] cadastros de funcionários.
     Responsavel: Chris Ramal
   - [x] reclamações e elogios dos clientes.
     Responsavel: https://github.com/illyaprototype
