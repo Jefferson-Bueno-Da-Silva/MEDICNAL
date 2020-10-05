@@ -12,17 +12,17 @@
   #### Parte 1
   - [ ] Tela de Login.
     Responsavel: https://github.com/AlisonMoreira
-  - [ ] Telas para cadastros de pacientes.
+  - [x] Telas para cadastros de pacientes.
     Responsavel: https://github.com/emilyemy
-  - [ ] cadastros de agendamentos.
+  - [x] cadastros de agendamentos.
     Responsavel: R:gabriel
-  - [ ] cadastros de médicos.
+  - [x] cadastros de médicos.
     Responsavel: eduardo
   - [ ] cadastros de funcionários.
     Responsavel: Chris Ramal
-  - [/] reclamações e elogios dos clientes.
+  - [x] reclamações e elogios dos clientes.
     Responsavel: https://github.com/illyaprototype
-  - [ ] cancelamento de consultas etc.
+  - [x] cancelamento de consultas etc.
     Responsavel: https://github.com/Jefferson-Bueno-Da-Silva
     
   #### Parte 2
