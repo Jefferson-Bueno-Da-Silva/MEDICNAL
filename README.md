@@ -45,3 +45,17 @@
   - [ ] Elaborar um manual de configuração da rede de computadores.
   - [ ] Elabora um manual de treinamento do usuário.
   - [ ] Os arquivos fontes deverão sem entregues em arquivo compactado, junto com o manual de como gerar os binários.
+
+
+  ### Cronograma!
+ - [ ] 06/10 ao dia 11/10 - Concluir, Fazer tudo = Boneco (Capa, Listas, Resumo, Abstract, Sumário), Introdução (Objetivo do Projeto), Referencial Teórico (Capitulo 2 Citação).
+ - [ ] 12/10 ao 18/10 - Requisitos e Planejamento
+
+ - [ ] 19/10 ao 20/11 - Desenvolvimento
+
+ # Lembrando que o Capitulo 3 é o Desenvolvimento, tem que estar a parte de engenharia de software, todas as telas explicativas do software, testes.
+
+ - [ ] Conclusão
+
+ - [ ] Bibliografia
+
