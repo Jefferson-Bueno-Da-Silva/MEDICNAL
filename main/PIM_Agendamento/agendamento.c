@@ -14,7 +14,8 @@ int menuAgendamento()
     int op; //op�ao
     do{
         system("cls");
-        printf("Cadastro de consultas\nDigite 1 para cadastrar\nDigite 2 para listar\nDigite 3 para sair\n");
+        printf("\t\t\tCADASTRO DE CONSULTAS\n");
+        printf("1 - AGENDAR UMA CONSULTA\t2 - BUSCAR CONSULTA\t3 - VOTLAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){

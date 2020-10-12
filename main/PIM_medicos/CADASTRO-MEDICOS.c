@@ -11,7 +11,7 @@ void menuMedico(){
 
     do{
         system("cls");
-        printf("\t\t\t\t\tGerenciamento de Medicos\n");
+        printf("\t\t\t\t\tGERENCIAMENTO DE MEDICOS\n");
         printf("1 - CADASTRAR UM MEDICO NOVO\t2 - LISTAR MEDICOS CADASTRADOS\t3 - VOLTAR AO MENU PRINCIPAl\n");
         scanf("%i", &op);
         switch (op)

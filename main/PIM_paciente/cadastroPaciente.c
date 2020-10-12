@@ -15,7 +15,8 @@ int menuPaciente()
     int op; //op�ao
     do{
         system("cls");
-        printf("Cadastro de Pacientes\nDigite 1 para cadastrar\nDigite 2 para listar\nDigite 3 para sair\n");
+        printf("\t\t\tCADASTRO DE PACIENTES\n");
+        printf("1 - CADASTRAR PACIENTE\t2 - BUSCAR UM PACIENTE\t3 - VOLTAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){
