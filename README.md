@@ -10,7 +10,7 @@
   
   
   #### Parte 1
-  - [ ] Tela de Login.
+  - [x] Tela de Login.
     Responsavel: https://github.com/AlisonMoreira
   - [x] Telas para cadastros de pacientes.
     Responsavel: https://github.com/emilyemy
