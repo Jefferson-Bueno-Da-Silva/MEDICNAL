@@ -9,14 +9,17 @@
 #define TEMP 100
 #define MAX_SZ 100
 
-void menuPrincipal();
-void menuFuncionario();
-void menuFeedback();
-void menuPaciente();
-void menuAgendamento();
+
+void menuPrincipal(); //MENU QUE LEVA PARA AS OUTRAS FUNÇÕES
+void menuFuncionario(); //MENU DO MÓDULO DE FUNCIONARIO
+void menuFeedback(); //MENU DO MÓDULO DE FEEDBACK
+void menuPaciente(); //MENU DO MÓDULO DE PACIENTE
+void menuAgendamento(); // MENU MÓDULO DE AGENDAMENTO
+void menuMedico(); //MENU MÓDULO MEDICO
+void cadastroFuncionario();
+void listarFuncionario();
 void cadastroPaciente();
 void listarPaciente();
-void menuMedico();
 void cadastroMedico();
 void listarMedico();
 void cadastroAgendamento();
@@ -41,7 +44,7 @@ struct info
 };
 
 
-void main(){
+int main(){
     //DEFININDO VARIAVEIS
     char login[MAX_SZ];
     char senha[MAX_SZ];    
@@ -52,12 +55,11 @@ void main(){
     char caminho[MAX_SZ] = ".\\PIM_login\\";
 
     volta:
-
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL LOGIN");
     //ENTRADA DE DADOS
     system("cls");
-    // menuPrincipal();
     printf("**\t\tMEDCNAL\t\t**\n");
-    // printf("login:\n");
 
     printf("LOGIN: ");
     scanf(" %[^\n]s", login); /*aqui você digita o login*/
@@ -88,16 +90,20 @@ void main(){
         goto volta;
     }
     getch();
+    return 0;
 }
 
 void menuPrincipal(char nome[MAX_SZ])
 {
-    SetConsoleTitle("MEDICNAL");
+    //VARIAVEIS
     int aberto = 1,
         op;
 
     do
     {
+        //DEFINE O NOME DO CONSOLE
+        SetConsoleTitle("MEDICNAL");
+        //ENTRADAS
         system("cls");
         printf("\n\t\t\tBem vindo, %s!\t\t\t\n", nome);
         printf("Escolha uma das opcoes abaixo:\n");
@@ -107,6 +113,7 @@ void menuPrincipal(char nome[MAX_SZ])
         scanf("%i", &op);
         switch (op)
         {
+            //SAIDAS
         case 1:
             menuAgendamento();
             break;
@@ -135,13 +142,57 @@ void menuPrincipal(char nome[MAX_SZ])
     } while (aberto == 1);
 }
 
+// ============ INICIO DO MÓDULO DE FUNCIONARIO ================
+void menuFuncionario()
+{
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL FUNCIONARIOS");
+    //ENTRADA DE TEXTO COM ACENTUAÇÃO
+    setlocale(LC_ALL, "Portuguese");
+    //DEFININDO VARIAVEIS
+    int opt;
+    int aberto = 1;
+    //RODA O PROGRAMA INFINITAMENTE
+    while (aberto)
+    {
+        do{
+            system("cls");
+            printf("===================== Software de Controle de funcionarios =========================\n");
+			printf("1 - Incluir funcionario.\t");
+            printf("2 - Buscar funcionario.\t\t");
+            printf("3 - Sair.\n\n");
+            printf("Digite sua opcao:\n");
+            printf("====================================================================================\n");            
+            scanf("%i", &opt);
+        } while ((opt < 1) && (opt > 3));
+
+        switch (opt)
+        {
+            case 1:
+                cadastroFuncionario();
+                break;
+            case 2:
+                listarFuncionario();
+                break;
+            case 3:
+                aberto = 0;
+                break;
+        }
+    }
+}
+
+
 void cadastroFuncionario()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CADASTRO FUNCIONARIOS");
+    //VARIAVEIS
     struct info _info;
     char nomeDoArquivo[TEMP];
     char caminho[TEMP] = ".\\PIM_funcionario\\";
     FILE *arquivo;
 
+    //ENTRADA DE DADOS
     system("cls");
     printf("Nome: \n");
     scanf(" %[^\n]s", _info.nome);
@@ -176,6 +227,7 @@ void cadastroFuncionario()
     printf("Numero: \n ");
     scanf(" %[^\n]s", _info.end.numero);
 
+    //GRAVA O TXT COM O NOME DIGITADO
     //--------------------------
     strcpy(nomeDoArquivo, _info.nome);
 
@@ -185,6 +237,7 @@ void cadastroFuncionario()
     //------------------------------
     arquivo = fopen(caminho,"wb");
 
+    //GRAVA AS INFORMAÇÕES DENTRO DO TXT
     fprintf(arquivo,"\n");
     fprintf(arquivo,"Nome: %s\n", _info.nome);
     fprintf(arquivo,"Cargo: %s\n",_info.cargo);
@@ -198,20 +251,27 @@ void cadastroFuncionario()
     fprintf(arquivo,"CEP: %s\n", _info.end.cep);
     fprintf(arquivo,"Numero: %s\n", _info.end.numero);
 
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
 
-void listarFuncionario(){
+void listarFuncionario()
+{
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL LISTAGEM FUNCIONARIOS");
+    //DEFININDO VARIAVEIS
     char nome[TEMP];
     char nomeDoArquivo[TEMP];
     char linha[5];
     char caminho[TEMP] = ".\\PIM_funcionario\\";
     FILE *arquivo;
-
+    
+    //ENTRADA
     system("cls");
     printf("Escreva o nome do Colaborador: \n");
     scanf(" %[^\n]s", nome);
 
+    //GRAVAÇÃO EM ARQUIVO COM O NOME DIGITADO
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
@@ -220,6 +280,7 @@ void listarFuncionario(){
 	
     arquivo = fopen(caminho,"rb");
 
+    //LEITURA DOS DADOS
     if (fgets(linha, 80, arquivo) == NULL)
     {
         printf("%s", caminho);
@@ -230,54 +291,28 @@ void listarFuncionario(){
         printf("%s", linha);
     }
     system("pause");
+    
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
-
-void menuFuncionario()
-{
-    setlocale(LC_ALL, "Portuguese");
-    int opt;
-    int aberto = 1;
-    while (aberto)
-    {
-        do{
-            system("cls");
-            printf("===================== Software de Controle de funcionarios =========================\n");
-			printf("1 - Incluir funcionario.\t");
-            printf("2 - Buscar funcionario.\t\t");
-            printf("3 - Sair.\n\n");
-            printf("Digite sua opcao:\n");
-            printf("====================================================================================\n");            
-            scanf("%i", &opt);
-        } while ((opt < 1) && (opt > 3));
-
-        switch (opt)
-        {
-            case 1:
-                cadastroFuncionario();
-                break;
-            case 2:
-                listarFuncionario();
-                break;
-            case 3:
-                aberto = 0;
-                break;
-        }
-    }
-}
-
-
+// ============ FIM DO MÓDULO DE FUNCIONARIO ================
+// ============ INICIO DO MÓDULO DE PACIENTES ================
 void menuPaciente()
 {
-
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL MENU PACIENTE");
+    //DEFININDO VARIAVEIS
     int op; //op�ao
     do{
+        //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\tCADASTRO DE PACIENTES\n");
         printf("1 - CADASTRAR PACIENTE\t2 - BUSCAR UM PACIENTE\t3 - VOLTAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
+        //ESCOLHA
         switch(op){
+            //SAIDAS
             case 1:
                 cadastroPaciente();
                 break;
@@ -292,12 +327,14 @@ void menuPaciente()
         }
     }
     while(op!=3);
-
 }
 
 
 void cadastroPaciente()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CADASTRO PACIENTE");
+    //DEFININDO VARIAVEIS
     char nome[MAX_SZ];
     char sexo[MAX_SZ];
     char nascimento[MAX_SZ];
@@ -313,7 +350,7 @@ void cadastroPaciente()
     char caminho[MAX_SZ] = ".\\PIM_paciente\\";
     FILE *arquivo;
 
-
+    //ENTRADA DE DADOS
     printf("Escreva o nome do paciente: \n");
     scanf(" %[^\n]s", nome);
     
@@ -344,6 +381,7 @@ void cadastroPaciente()
     printf("E-mail do paciente: \n ");
     scanf(" %[^\n]s", email); 
 
+    //CRIAÇÃO DO TXT COM NOME DO PACIENTE
     //--------------------------
     strcpy(nomeDoArquivo, nome);
 
@@ -353,6 +391,7 @@ void cadastroPaciente()
     //------------------------------
     arquivo = fopen(caminho,"wb");
 
+    //GRAVAÇÃO DOS DADOS NO ARQUIVO
     fprintf(arquivo,"\n");
 	fprintf (arquivo,"Nome: %s\n",nome);
 	fprintf (arquivo,"Sexo: %s\n",sexo);
@@ -365,28 +404,38 @@ void cadastroPaciente()
    	fprintf (arquivo,"Endereco: %s\n",endereco);
 	fprintf (arquivo,"Email: %s\n",email);
 
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
 
 void listarPaciente(){
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL LISTAGEM PACIENTE");
+
+    //DEFININDO VARIAVEIS
     char nome[MAX_SZ];
     char nomeDoArquivo[MAX_SZ];
     char linha[5];
     char caminho[MAX_SZ] = ".\\PIM_paciente\\";
     FILE *arquivo;
 
+    //ENTRADA DE DADOS
     system("cls");
     printf("Escreva o nome do paciente: \n");
     scanf(" %[^\n]s", nome);
 
+    //ABERTURA DO ARQUIVO COM O NOME DO PACIENTE
+    //=============================
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
 
     strcat(caminho, nomeDoArquivo);
+    //=============================
 	
     arquivo = fopen(caminho,"rb");
 
+    //LEITURA DO ARQUIVO
     if (fgets(linha, 80, arquivo) == NULL)
     {
         printf("%s", caminho);
@@ -399,17 +448,24 @@ void listarPaciente(){
     system("pause");
     fclose(arquivo);
 }
-
+// ============ FIM DO MÓDULO DE PACIENTES ================
+// ============ INICIO DO MÓDULO DE MÉDICO ================
 void menuMedico(){
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL MENU MEDICO");
+
+    //VARIAVEIS
     int op;
 
     do{
+        //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\t\t\tGERENCIAMENTO DE MEDICOS\n");
         printf("1 - CADASTRAR UM MEDICO NOVO\t2 - LISTAR MEDICOS CADASTRADOS\t3 - VOLTAR AO MENU PRINCIPAl\n");
         scanf("%i", &op);
         switch (op)
         {
+            //SAIDAS
         case 1:
             cadastroMedico();
             break;
@@ -428,6 +484,9 @@ void menuMedico(){
 
 void cadastroMedico()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CADASTRO MEDICO");
+    //DEFININDO VARIAVEIS
     char nome[SIZE];
     char crm[SIZE];
     char email[SIZE];
@@ -437,6 +496,7 @@ void cadastroMedico()
     char caminho[SIZE] = ".\\PIM_medicos\\";
     FILE *arquivo;
 
+    //ENTRADAS
     printf("Escreva o nome do Medico: \n");
     scanf(" %[^\n]s", nome);
 
@@ -452,6 +512,7 @@ void cadastroMedico()
     printf("Telefone para contato: \n ");
     scanf(" %[^\n]s", telefone);
 
+    //GRAVA O TXT COM O NOME DO MEDICO
     //--------------------------
     strcpy(nomeArquivo, nome);
 
@@ -461,6 +522,7 @@ void cadastroMedico()
     //------------------------------
     arquivo = fopen(caminho,"wb");
 
+    //GRAVA AS INFORMAÇÕES
     fprintf(arquivo,"\n");
     fprintf(arquivo,"nome: %s\n",nome);
     fprintf(arquivo,"CRM: %s\n",crm);
@@ -468,28 +530,38 @@ void cadastroMedico()
     fprintf(arquivo,"CPF: %s\n",cpf);
     fprintf(arquivo,"TELEFONE: %s\n",telefone);
 
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
 
 void listarMedico(){
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL LISTAGEM MEDICO");
+
+    //DEFININDO VARIAVEIS
     char nome[SIZE];
     char nomeDoArquivo[SIZE];
     char linha[5];
     char caminho[SIZE] = ".\\PIM_medicos\\";
     FILE *arquivo;
 
+    //ENTRADA DE DADOS
     system("cls");
     printf("Escreva o nome do Doutor(a): \n");
     scanf(" %[^\n]s", nome);
 
+    //PROCURA O ARQUIVO COM O NOME DO MEDICO
+    //=============================
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
 
     strcat(caminho, nomeDoArquivo);
+    //==============================
 	
     arquivo = fopen(caminho,"rb");
 
+    //LEITURA DAS INFORMAÇÕES DO ARQUIVO
     if (fgets(linha, 80, arquivo) == NULL)
     {
         printf("%s", caminho);
@@ -500,16 +572,19 @@ void listarMedico(){
         printf("%s", linha);
     }
     system("pause");
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
-
+// ============ FIM DO MÓDULO DE MÉDICO ================
+// ============ INICIO DO MÓDULO DE FEEDBACK ================
 void menuFeedback()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL FEEDBACK");
+
 	//_____VARIAVEIS _____//
 	int departmentNo;
 	int evaluationNote;
-	// char doctorName[MAX_SZ];
-	// char doctorSurname[MAX_SZ];
 	char username[MAX_SZ];
 	char comment[MAX_SZ];
 	char Yes;
@@ -568,15 +643,6 @@ void menuFeedback()
 	} while (departmentNo <= 0 || departmentNo > 15);
 	//_____DEPARTAMENTO_____//
 
-	// //_____NOME DO MEDICO_____//
-	// printf("\n\n\n Escreve nome do seu medico em ordem [NOME] [SOBRENOME]: ");
-	// scanf("%s %s", &doctorName, &doctorSurname);
-	// //_____NOME DO MEDICO_____//
-
-	// printf("\n\n________________________________________________________________________________________________________________");
-
-	//_____AVALIAÇÃO___//
-	//_____DO AVALIAÇÃO WHILE NOTA <= 0 OU NOTA > 15_____//
 	do
 	{
 		printf("\n\n\n Em escala de 1 ate 5 como voce avalia sua experiencia (1 = muito ruim e 5 = muito bom): ");
@@ -613,7 +679,6 @@ void menuFeedback()
 	//_____COMENTARIO____//
 	printf("\n\n\n COMENTARIO:\n ");
 	scanf(" %[^\n]s", comment);
-	// printf("myComment: %s", comment);
 	//_____COMENTARIO____//
 
 	printf("\n\n________________________________________________________________________________________________________________");
@@ -649,18 +714,24 @@ void menuFeedback()
 
 	system("pause");
 }
-
+// ============ FIM DO MÓDULO DE FEEDBACK ================
+// ============ INICIO DO MÓDULO DE AGENDAMENTOS ================
 void menuAgendamento()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL MENU AGENDAMENTOS");
 
+    //DEFININDO VARIAVEIS
     int op; //op�ao
     do{
+        //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\tCADASTRO DE CONSULTAS\n");
         printf("1 - AGENDAR UMA CONSULTA\t2 - BUSCAR CONSULTA\t3 - VOTLAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){
+            //SAIDAS
             case 1:
                 cadastroAgendamento();
                 break;
@@ -679,6 +750,10 @@ void menuAgendamento()
 
 void cadastroAgendamento()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CADASTRO DE AGENDAMENTO");
+
+    //DEFININDO VARIAVEIS
     char nome[MAX_SZ];
     char telefone1[MAX_SZ];
     char telefone2[MAX_SZ];
@@ -688,7 +763,7 @@ void cadastroAgendamento()
     char caminho[MAX_SZ] = ".\\PIM_Agendamento\\";
     FILE *arquivo;
 
-
+    //ENTRADAS
     printf("Escreva o nome do paciente: \n");
     scanf(" %[^\n]s", nome);
 
@@ -704,6 +779,7 @@ void cadastroAgendamento()
     printf("Hora da consulta: \n ");
     scanf(" %[^\n]s", hora);
 
+    //CRIA UM ARQUIVO COM O NOME DO PACIENTE AGENDADO
     //--------------------------
     strcpy(nomeDoArquivo, nome);
 
@@ -713,6 +789,7 @@ void cadastroAgendamento()
     //------------------------------
     arquivo = fopen(caminho,"wb");
 
+    //GRAVAÇÃO DE DADOS NO ARQUIVO
     fprintf(arquivo,"\n");
     fprintf(arquivo,"nome: %s\n",nome);
     fprintf(arquivo,"telefone: %s\n",telefone1);
@@ -721,28 +798,38 @@ void cadastroAgendamento()
     fprintf(arquivo,"hora: %s\n",hora);
     fprintf(arquivo,"Consulta agendada: SIM\n");
 
+    //FECHA O ARQUIVO
     fclose(arquivo);
 }
 
 void listarAgendamento(){
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL LISTAR AGENDAMENTO");
+
+    //DEFININDO VARIAVEIS
     char nome[MAX_SZ];
     char nomeDoArquivo[MAX_SZ];
     char linha[5];
     char caminho[MAX_SZ] = ".\\PIM_Agendamento\\";
     FILE *arquivo;
 
+    //ENTRADA
     system("cls");
     printf("Escreva o nome do paciente: \n");
     scanf(" %[^\n]s", nome);
 
+    //PROCURA O ARQUIVO COM O NOME DIGITADO
+    //=============================
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
 
     strcat(caminho, nomeDoArquivo);
-	
+	//==============================
+
     arquivo = fopen(caminho,"rb");
 
+    //LEITURA DO ARQUIVO
     if (fgets(linha, 80, arquivo) == NULL)
     {
         printf("%s", caminho);
@@ -755,12 +842,15 @@ void listarAgendamento(){
     system("pause");
     fclose(arquivo);
 }
+// ============ FIM DO MÓDULO DE AGENDAMENTOS ================
 
-
-
+// ============ INICIO DO MÓDULO DE USUARIOS =================
 //FUNÇÃO PARA CADASTRO DE USUARIOS
 void cadastroUsuario()
 {
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CADASTRO");
+
     //DEFININDO VARIAVEIS
     char login[MAX_SZ];
     char senha[MAX_SZ];
@@ -784,8 +874,10 @@ void cadastroUsuario()
     printf("Digite a senha novamente: \n");
     scanf(" %[^\n]s", senha2);
 
+    //COMPARA SE AS SENHAS SÃO IGUAIS
     if(strcmp(senha,senha2) == 0){
         
+        //CRIA UM ARQUIVO PARA A GRAVAÇÃO DOS DADOS
         //--------------------------
         strcpy(nomeDoArquivo, login);
 
@@ -793,19 +885,24 @@ void cadastroUsuario()
 
         strcat(caminho, nomeDoArquivo);
         //------------------------------
+
         arquivo = fopen(caminho,"wb");
 
+        //GRAVAÇÃO DOS DADOS
         fprintf(arquivo,"%s\n",nome);
         fprintf(arquivo,"%s\n",login);
     
         fprintf(arquivo,"%s\n",senha2);
         
     }else{
+        //SE AS SENHAS ESTÃO DIFERENTES ELE REPETE
         printf("As duas senhas não conferem!\n");
         getch();
         goto inicio;
     }
 
+    //FECHA O ARQUIVO
     fclose(arquivo);
     system("pause");
 }
+// ============ FIM DO MÓDULO DE USUARIOS ================
