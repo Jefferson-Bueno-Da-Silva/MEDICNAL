@@ -16,6 +16,7 @@ void menuFeedback(); //MENU DO MÓDULO DE FEEDBACK
 void menuPaciente(); //MENU DO MÓDULO DE PACIENTE
 void menuAgendamento(); // MENU MÓDULO DE AGENDAMENTO
 void menuMedico(); //MENU MÓDULO MEDICO
+void cancelaAgendamento();
 void cadastroFuncionario();
 void listarFuncionario();
 void cadastroPaciente();
@@ -107,7 +108,7 @@ void menuPrincipal(char nome[MAX_SZ])
         system("cls");
         printf("\n\t\t\tBem vindo, %s!\t\t\t\n", nome);
         printf("Escolha uma das opcoes abaixo:\n");
-        printf("1 - Agendamentos\t2-Pacientes\t\t3-Feedback pacientes\n");
+        printf("1 - Agendamentos\t2 - Pacientes\t\t3 - Feedback pacientes\n");
         printf("4 - Medicos\t\t5 - Funcionarios\t6 - Cadastrar novo usuario\n");
         printf("\t\t\t7 - SAIR\n");
         scanf("%i", &op);
@@ -727,7 +728,7 @@ void menuAgendamento()
         //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\tCADASTRO DE CONSULTAS\n");
-        printf("1 - AGENDAR UMA CONSULTA\t2 - BUSCAR CONSULTA\t3 - VOTLAR AO MENU INICIAL\n");
+        printf("1 - AGENDAR CONSULTA\t2 - BUSCAR CONSULTA\t3 - CANCELAR CONSULTA\n\t\t\t4 - VOTLAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){
@@ -739,13 +740,16 @@ void menuAgendamento()
                 listarAgendamento();
                 break;
             case 3:
+                cancelaAgendamento();
                 break;
+            case 4:
+                return 0;
             default:
                 printf("Opcao: %d INVALIDA", op);
             break;
         }
     }
-    while(op!=3);
+    while(op!=4);
 }
 
 void cadastroAgendamento()
@@ -842,6 +846,68 @@ void listarAgendamento(){
     system("pause");
     fclose(arquivo);
 }
+
+void cancelaAgendamento(){
+
+    //DEFININDO VARIAVEIS
+    int op;
+    char nome[MAX_SZ];
+    char cancelamento[MAX_SZ] = "Consulta agendada: NAO\n";
+    char linha[MAX_SZ];
+    char nomeDoArquivo[MAX_SZ];
+    char caminho[MAX_SZ] = ".\\PIM_Agendamento\\";
+
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL CANCELAR AGENDAMENTO");
+
+    //ENTRADA DE DADOS
+    system("cls");
+    printf("Escreva o nome do paciente: \n");
+    scanf(" %[^\n]s", nome);
+    
+    //PROCURA O ARQUIVO COM O NOME
+//--------------------------
+    strcpy(nomeDoArquivo, nome);
+
+    strcat(nomeDoArquivo, ".bin");
+
+    strcat(caminho, nomeDoArquivo);
+//------------------------------
+    
+    //ABRE UM ARQUIVO
+    FILE *fp;
+    fp = fopen(caminho,"rb+");
+
+    //VERIFICA SE O ARQUIVO EXISTE
+    if (fgets(linha, 80, fp) == NULL)
+    {
+        printf("\nNao exite um agendamento com esse nome! %s\n", nome);
+    }
+
+    //FAZ A LEITURA DO ARQUIVO
+    while (fgets(linha, 80, fp) != NULL)
+    {
+        printf("%s", linha);
+    }
+
+    //ENTRADA DE DADOS
+    printf("Deseja cancelar esta consulta ?\n(1 - SIM / 2 - NAO): ");
+    scanf("%i", &op);
+
+    //SAIDA DE DADOS NO ARQUIVO
+    if (op == 1)
+    {
+        fseek(fp, -23, SEEK_END);
+        fputs(cancelamento, fp);
+        printf("Consulta Cancelada!\n");
+        getch();
+    }else if(op == 2)
+    {
+        menuAgendamento();
+    }
+    fclose(fp);
+}
+
 // ============ FIM DO MÓDULO DE AGENDAMENTOS ================
 
 // ============ INICIO DO MÓDULO DE USUARIOS =================
