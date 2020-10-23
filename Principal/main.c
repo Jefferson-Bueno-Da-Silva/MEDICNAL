@@ -44,7 +44,7 @@ struct info
     struct endereco end;
 };
 
-
+// ========== INICIO LOGIN ============== ALISON
 int main(){
     //DEFININDO VARIAVEIS
     char login[MAX_SZ];
@@ -93,7 +93,8 @@ int main(){
     getch();
     return 0;
 }
-
+//======== FIM LOGIN ======== ALISON CONTINUA NA LINHA 914
+//======== INICIO MENU PRINCIPAL JEFFERSON=================
 void menuPrincipal(char nome[MAX_SZ])
 {
     //VARIAVEIS
@@ -142,8 +143,8 @@ void menuPrincipal(char nome[MAX_SZ])
         }
     } while (aberto == 1);
 }
-
-// ============ INICIO DO MÓDULO DE FUNCIONARIO ================
+//=============== FIM MENU PRINCIPAL ===========================
+// ============ INICIO DO MÓDULO DE FUNCIONARIO ================ CRISTOPHE
 void menuFuncionario()
 {
     //NOME DO CONSOLE
@@ -296,8 +297,8 @@ void listarFuncionario()
     //FECHA O ARQUIVO
     fclose(arquivo);
 }
-// ============ FIM DO MÓDULO DE FUNCIONARIO ================
-// ============ INICIO DO MÓDULO DE PACIENTES ================
+// ============ FIM DO MÓDULO DE FUNCIONARIO ================ CRISTOPHE
+// ============ INICIO DO MÓDULO DE PACIENTES =============== EMILY
 void menuPaciente()
 {
     //NOME DO CONSOLE
@@ -449,8 +450,8 @@ void listarPaciente(){
     system("pause");
     fclose(arquivo);
 }
-// ============ FIM DO MÓDULO DE PACIENTES ================
-// ============ INICIO DO MÓDULO DE MÉDICO ================
+// ============ FIM DO MÓDULO DE PACIENTES ================ EMILY
+// ============ INICIO DO MÓDULO DE MÉDICO ================ EDUARDO
 void menuMedico(){
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL MENU MEDICO");
@@ -576,8 +577,8 @@ void listarMedico(){
     //FECHA O ARQUIVO
     fclose(arquivo);
 }
-// ============ FIM DO MÓDULO DE MÉDICO ================
-// ============ INICIO DO MÓDULO DE FEEDBACK ================
+// ============ FIM DO MÓDULO DE MÉDICO ===================== EDUARDO
+// ============ INICIO DO MÓDULO DE FEEDBACK ================ ILHA
 void menuFeedback()
 {
     //NOME DO CONSOLE
@@ -715,8 +716,8 @@ void menuFeedback()
 
 	system("pause");
 }
-// ============ FIM DO MÓDULO DE FEEDBACK ================
-// ============ INICIO DO MÓDULO DE AGENDAMENTOS ================
+// =============== FIM DO MÓDULO DE FEEDBACK ==================== ELIAS
+// ============ INICIO DO MÓDULO DE AGENDAMENTOS ================ GABRIEL
 void menuAgendamento()
 {
     //NOME DO CONSOLE
@@ -908,9 +909,9 @@ void cancelaAgendamento(){
     fclose(fp);
 }
 
-// ============ FIM DO MÓDULO DE AGENDAMENTOS ================
+// ============ FIM DO MÓDULO DE AGENDAMENTOS ================ GABRIEL
 
-// ============ INICIO DO MÓDULO DE USUARIOS =================
+// ============ INICIO DO MÓDULO DE USUARIOS ================= ALISON CONTINUA AQUI
 //FUNÇÃO PARA CADASTRO DE USUARIOS
 void cadastroUsuario()
 {
@@ -971,4 +972,4 @@ void cadastroUsuario()
     fclose(arquivo);
     system("pause");
 }
-// ============ FIM DO MÓDULO DE USUARIOS ================
+// ============ FIM DO MÓDULO DE USUARIOS ================ ALISON FIM AQUI
