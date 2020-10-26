@@ -34,8 +34,8 @@
   - [ ] Devem ser criados mais relatórios para valorizar o trabalho
 
   ### Parte 3
-  - [ ] Criar um cenário (com a situação problema) bem detalhado.
-  - [ ] Identificar e descrever o contexto de uso (usuários, tarefas e ambiente)
+  - [x] Criar um cenário (com a situação problema) bem detalhado.
+  - [x] Identificar e descrever o contexto de uso (usuários, tarefas e ambiente)
   - [ ] Descrever as regras de negócio e o glossário do sistema.
   - [ ] Demonstrar o comportamento através de fluxogramas.
   - [ ] Elaborar um diagrama com a rede de computadores descrevendo a interligação entre as unidades e sua configuração.
@@ -48,8 +48,8 @@
 
 
   ### Cronograma!
- - [ ] 06/10 ao dia 11/10 - Concluir, Fazer tudo = Boneco (Capa, Listas, Resumo, Abstract, Sumário), Introdução (Objetivo do Projeto), Referencial Teórico (Capitulo 2 Citação).
- - [ ] 12/10 ao 18/10 - Requisitos e Planejamento
+ - [x] 06/10 ao dia 11/10 - Concluir, Fazer tudo = Boneco (Capa, Listas, Resumo, Abstract, Sumário), Introdução (Objetivo do Projeto), Referencial Teórico (Capitulo 2 Citação).
+ - [x] 12/10 ao 18/10 - Requisitos e Planejamento
 
  - [ ] 19/10 ao 20/11 - Desenvolvimento
 
