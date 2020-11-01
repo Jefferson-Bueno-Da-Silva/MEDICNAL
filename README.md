@@ -27,7 +27,7 @@
     
   #### Parte 2
 #####   Telas de Relatórios:
-  - [ ] pacientes por unidade da rede, 
+  - [x] pacientes por unidade da rede, 
   - [ ] unidade da rede que mais atende, 
   - [ ] totalização Diária e mensal do faturamento por unidade de rede
   - [ ] total da rede.
@@ -39,7 +39,7 @@
   - [ ] Descrever as regras de negócio e o glossário do sistema.
   - [ ] Demonstrar o comportamento através de fluxogramas.
   - [ ] Elaborar um diagrama com a rede de computadores descrevendo a interligação entre as unidades e sua configuração.
-  - [ ] Descrever a aplicação da engenharia de software no desenvolvimento do sistema.
+  - [x] Descrever a aplicação da engenharia de software no desenvolvimento do sistema.
   - [ ] Descrever os cálculos efetuados para a elaboração dos relatórios.
   - [ ] Elaborar um manual de instalação do software.
   - [ ] Elaborar um manual de configuração da rede de computadores.
