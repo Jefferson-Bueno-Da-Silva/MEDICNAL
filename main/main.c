@@ -4,6 +4,7 @@
 #include <locale.h>
 #include <string.h>
 #include <conio.h>
+#include <time.h>
 
 #define SIZE 100
 #define TEMP 100
@@ -16,16 +17,30 @@ void menuFeedback(); //MENU DO MÓDULO DE FEEDBACK
 void menuPaciente(); //MENU DO MÓDULO DE PACIENTE
 void menuAgendamento(); // MENU MÓDULO DE AGENDAMENTO
 void menuMedico(); //MENU MÓDULO MEDICO
-void cancelaAgendamento();
+void menuRelatorios(); //MENU MÓDULO DE RELATÓRIOS
+void faturamento(); //MÓDULO DE PADAMENTO
+
+
 void cadastroFuncionario();
 void listarFuncionario();
+
 void cadastroPaciente();
 void listarPaciente();
+
 void cadastroMedico();
 void listarMedico();
+
 void cadastroAgendamento();
 void listarAgendamento();
+void cancelaAgendamento();
+
 void cadastroUsuario();
+
+void gravaFaturamento();
+void debito();
+void credito();
+void aVista();
+
 
 
 struct endereco
@@ -53,22 +68,56 @@ int main(){
     char loginCerto[MAX_SZ];
     char senhaCerta[MAX_SZ];
     char nomeDoArquivo[MAX_SZ];
+    int op;
+    char unidade[MAX_SZ] = "";
     char caminho[MAX_SZ] = ".\\PIM_login\\";
 
     volta:
+    strcpy(unidade, "");
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LOGIN");
     //ENTRADA DE DADOS
     system("cls");
     printf("**\t\tMEDCNAL\t\t**\n");
 
+    printf("ESCOLHA A UNIDADE: ");
+    scanf("%i", &op);
+    switch (op)
+    {
+    case 1:
+        strcat(unidade, "UNIDADE_1\\");
+        break;
+    case 2:
+        strcat(unidade, "UNIDADE_2\\");
+        break;
+    case 3:
+        strcat(unidade, "UNIDADE_3\\");
+        break;
+    default:
+        printf("OP invalida\n");
+        system("pause");
+        goto volta;
+        break;
+    }
+
     printf("LOGIN: ");
     scanf(" %[^\n]s", login); /*aqui você digita o login*/
+
+    //MANIPULAÇÃO DE STRINGS:
 //--------------------------
+    //COMPIA O NOME DO LOGIN PARA O NOME DO ARQUIVO
     strcpy(nomeDoArquivo, login);
 
+    //ESCREVE A ESTENÇÃO .dat NO ARQUIVO
     strcat(nomeDoArquivo, ".dat");
 
+    //RESET DA VARIAVEL PARA RECEBER O CAMINHO
+    strcpy(caminho, ".\\PIM_login\\");
+
+    //RECEBE O CAMINHO DA UNIDADE
+    strcat(caminho, unidade);
+
+    //RECEBE O NOME DO ARQUICO
     strcat(caminho, nomeDoArquivo);
 //------------------------------
     FILE *fp;
@@ -78,13 +127,13 @@ int main(){
     fscanf(fp, "%s", &loginCerto);
     fscanf(fp, "%s", &senhaCerta);
 
-
-
     printf("SENHA: ");
     scanf("%s",senha);/*aqui você digita a senha*/
 
+    //COMPRARA AS DUAS STRIGS DE SENHA
     if((strcmp(loginCerto,login) == 0) && (strcmp(senhaCerta,senha) == 0)){
-        menuPrincipal(nome);
+        //PASSA O NOME E A UNIDADE COMO PARAMETRO
+        menuPrincipal(nome, unidade);
     }
     else{
         printf("ERRO\n\n");
@@ -94,7 +143,7 @@ int main(){
     return 0;
 }
 
-void menuPrincipal(char nome[MAX_SZ])
+void menuPrincipal(char nome[MAX_SZ], char unidade[MAX_SZ])
 {
     //VARIAVEIS
     int aberto = 1,
@@ -107,33 +156,39 @@ void menuPrincipal(char nome[MAX_SZ])
         //ENTRADAS
         system("cls");
         printf("\n\t\t\tBem vindo, %s!\t\t\t\n", nome);
-        printf("Escolha uma das opcoes abaixo:\n");
+        printf("\nEscolha uma das opcoes abaixo:\n");
         printf("1 - Agendamentos\t2 - Pacientes\t\t3 - Feedback pacientes\n");
         printf("4 - Medicos\t\t5 - Funcionarios\t6 - Cadastrar novo usuario\n");
-        printf("\t\t\t7 - SAIR\n");
+        printf("7 - Faturamento \t8 - Relatorio \t\t9 - SAIR\n");
         scanf("%i", &op);
         switch (op)
         {
             //SAIDAS
         case 1:
-            menuAgendamento();
+            menuAgendamento(unidade);
             break;
         case 2:
-            menuPaciente();
+            menuPaciente(unidade);
             break;    
         case 3:
-            menuFeedback();
+            menuFeedback(unidade);
             break; 
         case 4:
-            menuMedico();
+            menuMedico(unidade);
             break;
         case 5:
-            menuFuncionario();
+            menuFuncionario(unidade);
             break;
         case 6:
-            cadastroUsuario();
+            cadastroUsuario(unidade);
             break;
         case 7:
+            faturamento(unidade);
+            break;
+        case 8:
+            menuRelatorios();
+            break;
+        case 9:
             exit(0);
             break;
         default:
@@ -144,7 +199,7 @@ void menuPrincipal(char nome[MAX_SZ])
 }
 
 // ============ INICIO DO MÓDULO DE FUNCIONARIO ================
-void menuFuncionario()
+void menuFuncionario(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL FUNCIONARIOS");
@@ -158,22 +213,21 @@ void menuFuncionario()
     {
         do{
             system("cls");
-            printf("===================== Software de Controle de funcionarios =========================\n");
+            printf("===================== Menu de funcionarios =========================\n");
 			printf("1 - Incluir funcionario.\t");
             printf("2 - Buscar funcionario.\t\t");
             printf("3 - Sair.\n\n");
-            printf("Digite sua opcao:\n");
-            printf("====================================================================================\n");            
+            printf("Digite sua opcao: ");            
             scanf("%i", &opt);
         } while ((opt < 1) && (opt > 3));
 
         switch (opt)
         {
             case 1:
-                cadastroFuncionario();
+                cadastroFuncionario(unidade);
                 break;
             case 2:
-                listarFuncionario();
+                listarFuncionario(unidade);
                 break;
             case 3:
                 aberto = 0;
@@ -183,7 +237,7 @@ void menuFuncionario()
 }
 
 
-void cadastroFuncionario()
+void cadastroFuncionario(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL CADASTRO FUNCIONARIOS");
@@ -234,7 +288,10 @@ void cadastroFuncionario()
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
+
     //------------------------------
     arquivo = fopen(caminho,"wb");
 
@@ -256,7 +313,7 @@ void cadastroFuncionario()
     fclose(arquivo);
 }
 
-void listarFuncionario()
+void listarFuncionario(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LISTAGEM FUNCIONARIOS");
@@ -276,6 +333,8 @@ void listarFuncionario()
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
+
+    strcat(caminho, unidade);
 
     strcat(caminho, nomeDoArquivo);
 	
@@ -298,7 +357,7 @@ void listarFuncionario()
 }
 // ============ FIM DO MÓDULO DE FUNCIONARIO ================
 // ============ INICIO DO MÓDULO DE PACIENTES ================
-void menuPaciente()
+void menuPaciente(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL MENU PACIENTE");
@@ -315,10 +374,10 @@ void menuPaciente()
         switch(op){
             //SAIDAS
             case 1:
-                cadastroPaciente();
+                cadastroPaciente(unidade);
                 break;
             case 2:
-                listarPaciente();
+                listarPaciente(unidade);
                 break;
             case 3:
                 break;
@@ -331,7 +390,7 @@ void menuPaciente()
 }
 
 
-void cadastroPaciente()
+void cadastroPaciente(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL CADASTRO PACIENTE");
@@ -388,6 +447,8 @@ void cadastroPaciente()
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
     //------------------------------
     arquivo = fopen(caminho,"wb");
@@ -409,7 +470,7 @@ void cadastroPaciente()
     fclose(arquivo);
 }
 
-void listarPaciente(){
+void listarPaciente(char unidade[MAX_SZ]){
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LISTAGEM PACIENTE");
 
@@ -431,6 +492,8 @@ void listarPaciente(){
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
     //=============================
 	
@@ -451,7 +514,7 @@ void listarPaciente(){
 }
 // ============ FIM DO MÓDULO DE PACIENTES ================
 // ============ INICIO DO MÓDULO DE MÉDICO ================
-void menuMedico(){
+void menuMedico(char unidade[MAX_SZ]){
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL MENU MEDICO");
 
@@ -468,10 +531,10 @@ void menuMedico(){
         {
             //SAIDAS
         case 1:
-            cadastroMedico();
+            cadastroMedico(unidade);
             break;
         case 2:
-            listarMedico();
+            listarMedico(unidade);
             break;
         case 3:
             break;
@@ -483,7 +546,7 @@ void menuMedico(){
     }while(op != 3);
 }
 
-void cadastroMedico()
+void cadastroMedico(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL CADASTRO MEDICO");
@@ -519,6 +582,8 @@ void cadastroMedico()
 
     strcat(nomeArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeArquivo);
     //------------------------------
     arquivo = fopen(caminho,"wb");
@@ -535,7 +600,7 @@ void cadastroMedico()
     fclose(arquivo);
 }
 
-void listarMedico(){
+void listarMedico(char unidade[MAX_SZ]){
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LISTAGEM MEDICO");
 
@@ -556,6 +621,8 @@ void listarMedico(){
     strcpy(nomeDoArquivo, nome);
 
     strcat(nomeDoArquivo, ".bin");
+
+    strcat(caminho, unidade);
 
     strcat(caminho, nomeDoArquivo);
     //==============================
@@ -578,7 +645,7 @@ void listarMedico(){
 }
 // ============ FIM DO MÓDULO DE MÉDICO ================
 // ============ INICIO DO MÓDULO DE FEEDBACK ================
-void menuFeedback()
+void menuFeedback(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL FEEDBACK");
@@ -589,6 +656,7 @@ void menuFeedback()
 	char username[MAX_SZ];
 	char comment[MAX_SZ];
 	char Yes;
+    char caminho[MAX_SZ] = "\\PIM_feedback\\";
 	//_____VARIAVEIS _____//
 
 	system("cls");
@@ -686,7 +754,12 @@ void menuFeedback()
 
 	//_____BANCO DE DADOS____//
 	FILE *feedback;
-	feedback = fopen("PIM_feedback\\feedbacks.txt", "a");
+
+    strcat(caminho, unidade);
+
+    strcat(caminho, "feedbacks.txt");
+
+	feedback = fopen(caminho, "a");
 
 	fprintf(feedback, "NOME: %s\n", username);
 	fprintf(feedback, "DEPARTAMENTO: %d\n", departmentNo);
@@ -717,7 +790,7 @@ void menuFeedback()
 }
 // ============ FIM DO MÓDULO DE FEEDBACK ================
 // ============ INICIO DO MÓDULO DE AGENDAMENTOS ================
-void menuAgendamento()
+void menuAgendamento(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL MENU AGENDAMENTOS");
@@ -734,16 +807,16 @@ void menuAgendamento()
         switch(op){
             //SAIDAS
             case 1:
-                cadastroAgendamento();
+                cadastroAgendamento(unidade);
                 break;
             case 2:
-                listarAgendamento();
+                listarAgendamento(unidade);
                 break;
             case 3:
-                cancelaAgendamento();
+                cancelaAgendamento(unidade);
                 break;
             case 4:
-                return 0;
+                break;
             default:
                 printf("Opcao: %d INVALIDA", op);
             break;
@@ -752,7 +825,7 @@ void menuAgendamento()
     while(op!=4);
 }
 
-void cadastroAgendamento()
+void cadastroAgendamento(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL CADASTRO DE AGENDAMENTO");
@@ -789,6 +862,8 @@ void cadastroAgendamento()
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
     //------------------------------
     arquivo = fopen(caminho,"wb");
@@ -806,7 +881,7 @@ void cadastroAgendamento()
     fclose(arquivo);
 }
 
-void listarAgendamento(){
+void listarAgendamento(char unidade[MAX_SZ]){
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LISTAR AGENDAMENTO");
 
@@ -828,6 +903,8 @@ void listarAgendamento(){
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
 	//==============================
 
@@ -847,7 +924,7 @@ void listarAgendamento(){
     fclose(arquivo);
 }
 
-void cancelaAgendamento(){
+void cancelaAgendamento(char unidade[MAX_SZ]){
 
     //DEFININDO VARIAVEIS
     int op;
@@ -871,6 +948,8 @@ void cancelaAgendamento(){
 
     strcat(nomeDoArquivo, ".bin");
 
+    strcat(caminho, unidade);
+
     strcat(caminho, nomeDoArquivo);
 //------------------------------
     
@@ -878,41 +957,41 @@ void cancelaAgendamento(){
     FILE *fp;
     fp = fopen(caminho,"rb+");
 
-    //VERIFICA SE O ARQUIVO EXISTE
-    if (fgets(linha, 80, fp) == NULL)
-    {
-        printf("\nNao exite um agendamento com esse nome! %s\n", nome);
-    }
+    do{
+        //VERIFICA SE O ARQUIVO EXISTE
+        if (fgets(linha, 80, fp) == NULL)
+        {
+            printf("\nNao exite um agendamento com esse nome! %s\n", nome);
+        }
 
-    //FAZ A LEITURA DO ARQUIVO
-    while (fgets(linha, 80, fp) != NULL)
-    {
-        printf("%s", linha);
-    }
+        //FAZ A LEITURA DO ARQUIVO
+        while (fgets(linha, 80, fp) != NULL)
+        {
+            printf("%s", linha);
+        }
 
-    //ENTRADA DE DADOS
-    printf("Deseja cancelar esta consulta ?\n(1 - SIM / 2 - NAO): ");
-    scanf("%i", &op);
+        //ENTRADA DE DADOS
+        printf("Deseja cancelar esta consulta ?\n(1 - SIM / 2 - NAO): ");
+        scanf("%i", &op);
 
-    //SAIDA DE DADOS NO ARQUIVO
-    if (op == 1)
-    {
-        fseek(fp, -23, SEEK_END);
-        fputs(cancelamento, fp);
-        printf("Consulta Cancelada!\n");
-        getch();
-    }else if(op == 2)
-    {
-        menuAgendamento();
-    }
-    fclose(fp);
+        //SAIDA DE DADOS NO ARQUIVO
+        if (op == 1)
+        {
+            fseek(fp, -23, SEEK_END);
+            fputs(cancelamento, fp);
+            printf("Consulta Cancelada!\n");
+            getch();
+            break;
+        }
+        fclose(fp);
+    }while(op != 2);
 }
 
 // ============ FIM DO MÓDULO DE AGENDAMENTOS ================
 
 // ============ INICIO DO MÓDULO DE USUARIOS =================
 //FUNÇÃO PARA CADASTRO DE USUARIOS
-void cadastroUsuario()
+void cadastroUsuario(char unidade[MAX_SZ])
 {
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL CADASTRO");
@@ -949,6 +1028,8 @@ void cadastroUsuario()
 
         strcat(nomeDoArquivo, ".dat");
 
+        strcat(caminho, unidade);
+
         strcat(caminho, nomeDoArquivo);
         //------------------------------
 
@@ -972,3 +1053,157 @@ void cadastroUsuario()
     system("pause");
 }
 // ============ FIM DO MÓDULO DE USUARIOS ================
+
+// ============ INICIO MÓDULO FATURAMENTO ================
+void faturamento(char unidade[MAX_SZ]){
+    
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL FATURAMENTO");
+
+    //DEFININDO VARIAVEIS
+    int op; //op�ao
+    int parcelas; //quarda a quantidade de parcelas
+    do{
+        //ENTRADA DE DADOS
+        system("cls");
+        printf("\t\t\tFATURAMENTO\n\n");
+        printf("\t\t\tEscolha a forma de pagamento:\n");
+        printf("1 - Debito \t2 - Credito \t3 - A Vista\t4 - VOTLAR AO MENU INICIAL\n");
+        scanf("%d", &op);
+
+        switch(op){
+            //SAIDAS
+            case 1:
+                printf("\n\t\t\t***\tForma de pagamento selecionada: DEBITO\t***\n");
+                gravaFaturamento(unidade, op);
+                printf("Pamamento registrado com sucesso\n");
+                getch();
+                break;
+            case 2:
+                printf("\n\t\t\t***\tForma de pagamento selecionada: CREDITO\t***\n");
+                printf("Quantidade de parcelas: ");
+                scanf("%i", &parcelas);
+                gravaFaturamento(unidade, op);
+                printf("Pamamento registrado com sucesso\n");
+                getch();
+                break;
+            case 3:
+                printf("\n\t\t\t***\tForma de pagamento selecionada: A VISTA\t***\n");
+                gravaFaturamento(unidade, op);
+                printf("Pamamento registrado com sucesso\n");
+                getch();
+                break;
+            case 4:
+                break;
+            default:
+                printf("Opcao: %d INVALIDA", op);
+            break;
+        }
+    }
+    while(op!=4);
+
+}
+
+void gravaFaturamento(char unidade[MAX_SZ], int op){
+    //VARIAVEIS
+    float valor, clienteValor, troco;
+    char nomeDoArquivo[MAX_SZ] = "faturamento";
+    char caminho[MAX_SZ] = ".\\PIM_Faturamento\\";
+
+    //ponteiro para struct que armazena data e hora
+    struct tm *data_hora_atual;
+
+    //variável do tipo time_t para armazenar o tempo em segundos  
+    time_t segundos;
+  
+    //obtendo o tempo em segundos  
+    time(&segundos); 
+
+    //para converter de segundos para o tempo local  
+    //utilizamos a função localtime  
+    data_hora_atual = localtime(&segundos); 
+
+    FILE *arquivo;
+    
+    //FIM VARIAVEIS
+
+    //PROCESSAMENTO
+    do{
+        printf("Digite o valor cobrado: \n");
+        scanf("%f", &valor);
+        if(op == 3){
+            printf("Valor entregue pelo cliente: ");
+            scanf("%f", &clienteValor);
+
+            troco = clienteValor - valor;
+
+            printf("Troco: %.2f\n", troco);
+            getch();
+        }
+
+        //CRIA UM ARQUIVO PARA A GRAVAÇÃO DOS DADOS
+        //--------------------------
+
+        strcat(nomeDoArquivo, ".dat");
+
+        strcat(caminho, unidade);
+
+        strcat(caminho, nomeDoArquivo);
+        //------------------------------
+
+        arquivo = fopen(caminho,"ab");
+
+        //SAIDA
+        //DIA
+        fprintf(arquivo, "%d\n", data_hora_atual->tm_mday);
+        //MES
+        fprintf(arquivo, "%d\n", data_hora_atual->tm_mon+1);
+        //VALOR DO PAGAMENTO
+        fprintf(arquivo, "%f\n", valor);
+        break;
+
+    }while(1);
+    //FECHA O ARQUIVO
+    fclose(arquivo);
+}
+// ============ FIM MÓDULO FATURAMENTO    ================
+
+//============= INICIO MÓDULO RELATÓRIOS  ================
+
+void menuRelatorios(){
+
+    //NOME DO CONSOLE
+    SetConsoleTitle("MEDICNAL MENU RELATORIOS");
+
+    //DEFININDO VARIAVEIS
+    int op; //op�ao
+    do{
+        //ENTRADA DE DADOS
+        system("cls");
+        printf("\t\t\tRELATORIOS\n");
+        printf("1\t2\t3\t4 - VOTLAR AO MENU INICIAL\n");
+        scanf("%d", &op);
+
+        switch(op){
+            //SAIDAS
+            case 1:
+                printf("Entrou!");
+                break;
+            case 2:
+                printf("Entrou!");
+                break;
+            case 3:
+                printf("Entrou!");
+                break;
+            case 4:
+                break;
+            default:
+                printf("Opcao: %d INVALIDA", op);
+            break;
+        }
+    }
+    while(op!=4);
+
+}
+
+// ============ FIM MÓDULO RELATÓRIOS ================
