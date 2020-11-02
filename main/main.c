@@ -81,7 +81,7 @@ int main(){
     char caminho[MAX_SZ] = ".\\PIM_login\\";
 
     volta:
-    menuRelatorios();
+    // menuRelatorios();
     strcpy(unidade, "");
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LOGIN");
