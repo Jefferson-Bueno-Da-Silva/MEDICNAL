@@ -5,6 +5,7 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
+#include <dirent.h>
 
 #define SIZE 100
 #define TEMP 100
@@ -20,26 +21,33 @@ void menuMedico(); //MENU MÓDULO MEDICO
 void menuRelatorios(); //MENU MÓDULO DE RELATÓRIOS
 void faturamento(); //MÓDULO DE PADAMENTO
 
-
+//MÓDULO FUNCIONARIOS
 void cadastroFuncionario();
 void listarFuncionario();
 
+//MÓDULO PASSIENTES
 void cadastroPaciente();
 void listarPaciente();
 
+//MÓDULO MÉDICO
 void cadastroMedico();
 void listarMedico();
 
+//MÓDULO AGENDAMENTO
 void cadastroAgendamento();
 void listarAgendamento();
 void cancelaAgendamento();
 
+//MÓDULO USUARIO
 void cadastroUsuario();
 
+//MÓDULO FATURAMENTO
 void gravaFaturamento();
-void debito();
-void credito();
-void aVista();
+
+//MÓDULO RELATÓRIO
+void pacientesPorRede();
+void redeMaisAtende();
+void faturamentoUnidade();
 
 
 
@@ -73,6 +81,7 @@ int main(){
     char caminho[MAX_SZ] = ".\\PIM_login\\";
 
     volta:
+    menuRelatorios();
     strcpy(unidade, "");
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LOGIN");
@@ -1181,19 +1190,20 @@ void menuRelatorios(){
         //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\tRELATORIOS\n");
-        printf("1\t2\t3\t4 - VOTLAR AO MENU INICIAL\n");
+        printf("1 - Pacientes por unidade de rede\t2 - Unidade da rede que mais atende\n");
+        printf("3 - Faturamento por unidade\t\t4 - VOTLAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){
             //SAIDAS
             case 1:
-                printf("Entrou!");
+                pacientesPorRede();
                 break;
             case 2:
-                printf("Entrou!");
+                redeMaisAtende();
                 break;
             case 3:
-                printf("Entrou!");
+                faturamentoUnidade();
                 break;
             case 4:
                 break;
@@ -1204,6 +1214,244 @@ void menuRelatorios(){
     }
     while(op!=4);
 
+}
+
+void pacientesPorRede(){
+    
+    //VARIAVEIS
+    int op, cont = 0, i;
+    char unidade[MAX_SZ] = "";
+    char nomearquivo[MAX_SZ];
+    char verNomearquivo[MAX_SZ];
+    char caminho[MAX_SZ] = ".\\PIM_paciente\\";
+    DIR *dir;
+    struct dirent *lsdir;
+    
+    //LABEL DE VOLTA
+    volta:
+
+    //ENTRADA
+    system("cls");
+    printf("Digite a unidade: ");
+    scanf("%i", &op);
+
+    switch (op)
+    {
+    case 1:
+        strcat(unidade, "UNIDADE_1\\");
+        break;
+    case 2:
+        strcat(unidade, "UNIDADE_2\\");
+        break;
+    case 3:
+        strcat(unidade, "UNIDADE_3\\");
+        break;
+    default:
+        printf("OP invalida\n");
+        goto volta;
+        break;
+    }
+
+    //CAMINHO DA UNIDADE ESCOLHIDA
+    strcat(caminho, unidade);
+
+    //ABERTURA DA PASTA
+    dir = opendir(caminho);
+
+    // ESCREVE O NOME DOS ARQUIVOS
+    for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+    {
+        if (i >= 2)
+        {
+            strcpy(nomearquivo, lsdir->d_name);
+            strncpy(verNomearquivo, nomearquivo, strlen(nomearquivo) - 4);
+            printf (" --> %s\n", verNomearquivo);
+            cont++;
+        }
+    }
+    //SAIDA DE DADS
+    
+    printf("Quantidade de pacientes na unidade %i eh: %i", op, cont);
+
+    //PAUSE
+    getch();
+
+    //FECHA A PASTA
+    closedir(dir);
+}
+
+void redeMaisAtende(){
+
+    //VARIAVEIS
+    int i, j;
+    char nomearquivo[MAX_SZ];
+    char *unidades[3];
+    unidades[0] = "UNIDADE_1";
+    unidades[1] = "UNIDADE_2";
+    unidades[2] = "UNIDADE_3";
+    int cont[3];
+
+    char caminho[MAX_SZ] = "";
+    DIR *dir;
+    struct dirent *lsdir;
+
+    //ESTRUTURA DE REPEDIÇÃO
+    for(j = 0; j < 3; j++){
+
+        cont[j] = 0;
+        //RESET DO CAMINHO
+        strcpy(caminho, ".\\PIM_Agendamento\\");
+        //CAMINHO DA UNIDADE
+        strcat(caminho, unidades[j]);
+        //ABRE O DIRETORIO
+        dir = opendir(caminho);
+
+
+        //PROCESSAMENTO, ENTRA NO DIRETORIO E CONTRA QUANTOS ARQUIVOS
+        //PULA A PASTA RAIZ E O ".."
+        for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+        {
+            if (i >= 2)
+            {
+                cont[j]++;
+            }
+        }
+        closedir(dir);
+    }
+    //FECHA A PASTA
+    system("cls");
+    //SAIDA DE DADOS
+    printf("UNIDADE 1\tUNIDADE 2\tUNIDADE 3\n");
+    printf("   %i \t\t    %i \t\t    %i \n", cont[0], cont[1], cont[2]);
+
+    //VERIFICAÇÃO DE UNIDADE QUE MAIS ATENDE
+    if(cont[0] > cont[1] && cont[0] > cont[2]){
+        printf("A unidade que mais atende eh: %s\n", unidades[0]);
+    }else if(cont[1] > cont[0] && cont[1] > cont[2]){
+        printf("A unidade que mais atende eh: %s\n", unidades[1]);
+    }else if(cont[2] > cont[1] && cont[2] > cont[0]){
+        printf("A unidade que mais atende eh: %s\n", unidades[2]);
+    }else if(cont[0] == cont[1]){
+        printf("As unidades %s e %s estao empatadas\n", unidades[0], unidades[1]);
+    }else if(cont[1] == cont[2]){
+        printf("As unidades %s e %s estao empatadas\n", unidades[1], unidades[2]);
+    }else if(cont[2] == cont[0]){
+        printf("As unidades %s e %s estao empatadas\n", unidades[0], unidades[2]);
+    }
+
+    getch();
+}
+
+void faturamentoUnidade(){
+    //VARIAVEIS
+    int i, j, k = 0, l = 0;
+    float resultado[3];
+    char linha[MAX_SZ];
+
+    //ponteiro para struct que armazena data e hora
+    struct tm *data_hora_atual;
+
+    //variável do tipo time_t para armazenar o tempo em segundos  
+    time_t segundos;
+  
+    //obtendo o tempo em segundos  
+    time(&segundos); 
+
+    //para converter de segundos para o tempo local  
+    //utilizamos a função localtime  
+    data_hora_atual = localtime(&segundos); 
+
+    int diaAtual = data_hora_atual->tm_mday;
+
+    int mesAtual = data_hora_atual->tm_mon + 1;
+
+
+    //VARIAVEIS DE PASTA
+    char *unidades[3];
+    unidades[0] = "UNIDADE_1\\";
+    unidades[1] = "UNIDADE_2\\";
+    unidades[2] = "UNIDADE_3\\";
+    char caminho[MAX_SZ] = "";
+    char nomearquivo[MAX_SZ];
+    DIR *dir;
+    struct dirent *lsdir;
+
+    //VARIAVEIS DE ARQUIVOS
+    int *dias;
+    int dia;
+    dias = (int *) malloc(dia * sizeof(int));
+    int *meses;
+    int mes;
+    meses = (int *) malloc(mes * sizeof(int));
+    float *valores;
+    float valor;
+    valores = (float *) malloc(valor * sizeof(float));
+    
+    FILE *arquivo;
+
+
+
+    //ENTRADA
+    //PROCESSAMENTO
+
+    //ESTRUTURA DE REPEDIÇÃO
+    for(j = 0; j < 3; j++){
+        //RESET DO CAMINHO
+        strcpy(caminho, ".\\PIM_Faturamento\\");
+        //CAMINHO DA UNIDADE
+        strcat(caminho, unidades[j]);
+        //ABRE O DIRETORIO
+        dir = opendir(caminho);
+
+
+        //PROCESSAMENTO, ENTRA NO DIRETORIO E CONTRA QUANTOS ARQUIVOS
+        //PULA A PASTA RAIZ E O ".."
+        for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+        {
+            if (i >= 2)
+            {
+                //ENTRA NA PASTA PARA LER OS ARQUIVOS
+                strcpy(nomearquivo, lsdir->d_name);
+
+                //CONCATENA O NOME DO ARQUIVO NO CAMINHO
+                strcat(caminho, nomearquivo);
+
+                //PROCESSAMENTO DO ARQUIVO
+                arquivo = fopen(caminho, "rb");
+
+                while(fscanf(arquivo, "%i", &dias[k]) != EOF && fscanf(arquivo, "%i", &meses[k]) != EOF && fscanf(arquivo, "%f", &valores[k]) != EOF){
+
+                    printf("dia: %i\n", dias[k]);
+                    printf("mes: %i\n", meses[k]);
+                    printf("valor: %f\n", valores[k]);
+                    getch();
+                    k++;
+                }
+
+                // if(diaAtual == data[0][0] && mesAtual == data[j][1]){
+                //     resultado[j] += valor[j][2];
+                //     printf("estrou\n");
+                //     printf("%f\n", resultado[j]);
+                // }
+
+                fclose(arquivo);
+            }
+        }
+        closedir(dir);
+    }
+
+    //PROCESSAMENTO CALCULOS
+
+    //SAIDA DE DADOS
+    getch();
+    // system("cls");
+    // printf("\t\t\t\tFaturamento\n");
+    // printf("\t\tDo dia\t\tDo mes\n");
+    // printf("Unidade 1: \n");
+    // printf("Unidade 2: \n");
+    // printf("Unidade 3: \n");
+    // //PAUSE
+    // getch();
 }
 
 // ============ FIM MÓDULO RELATÓRIOS ================
