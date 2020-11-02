@@ -1,18 +1,25 @@
-NOME: øýb
+NOME: ï¿½ï¿½b
 DEPARTAMENTO: 10
-NOTA: 2
+2
 COMENTARIO: RUIM
 _______________________________________________________
-
-NOME: ¨úb
+NOME: ï¿½ï¿½b
 DEPARTAMENTO: 1
-NOTA: 1
+1
 COMENTARIO: 
 _______________________________________________________
-
-NOME: ¨úb
+NOME: ï¿½ï¿½b
 DEPARTAMENTO: 2
-NOTA: 2
+2
 COMENTARIO: 2
 _______________________________________________________
-
+NOME: jeffe
+DEPARTAMENTO: 10
+5
+COMENTARIO: bom
+_______________________________________________________
+NOME: jeferson
+DEPARTAMENTO: 8
+5
+COMENTARIO: bom
+_______________________________________________________

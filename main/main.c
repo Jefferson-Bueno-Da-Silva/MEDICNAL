@@ -46,8 +46,12 @@ void gravaFaturamento();
 
 //MÓDULO RELATÓRIO
 void pacientesPorRede();
+void medicosPorRede();
+void funcionariosPorRede();
+void usuariosPorRede();
 void redeMaisAtende();
 void faturamentoUnidade();
+void feedbackUnidade();
 
 
 
@@ -81,7 +85,6 @@ int main(){
     char caminho[MAX_SZ] = ".\\PIM_login\\";
 
     volta:
-    // menuRelatorios();
     strcpy(unidade, "");
     //NOME DO CONSOLE
     SetConsoleTitle("MEDICNAL LOGIN");
@@ -665,7 +668,7 @@ void menuFeedback(char unidade[MAX_SZ])
 	char username[MAX_SZ];
 	char comment[MAX_SZ];
 	char Yes;
-    char caminho[MAX_SZ] = "\\PIM_feedback\\";
+    char caminho[MAX_SZ] = ".\\PIM_feedback\\";
 	//_____VARIAVEIS _____//
 
 	system("cls");
@@ -772,9 +775,10 @@ void menuFeedback(char unidade[MAX_SZ])
 
 	fprintf(feedback, "NOME: %s\n", username);
 	fprintf(feedback, "DEPARTAMENTO: %d\n", departmentNo);
-	fprintf(feedback, "NOTA: %d\n", evaluationNote);
+	fprintf(feedback, "%i\n", evaluationNote);
 	fprintf(feedback, "COMENTARIO: %s\n", comment);
-	fprintf(feedback, "_______________________________________________________\n\n");
+	fprintf(feedback, "_______________________________________________________\n");
+
 	fclose(feedback);
 	//_____BANCO DE DADOS____//
 
@@ -1190,8 +1194,10 @@ void menuRelatorios(){
         //ENTRADA DE DADOS
         system("cls");
         printf("\t\t\tRELATORIOS\n");
-        printf("1 - Pacientes por unidade de rede\t2 - Unidade da rede que mais atende\n");
-        printf("3 - Faturamento por unidade\t\t4 - VOTLAR AO MENU INICIAL\n");
+        printf("1 - Pacientes por unidade de rede\t2 - Medicos por unidade de rede\n");
+        printf("3 - Funcionarios por unidade de rede\t4 - Usuarios por unidade de rede\n");
+        printf("5 - Unidade da rede que mais atende\t6 - Faturamento mensal por unidade\n");
+        printf("\t\t\t7 - VOLTAR AO MENU INICIAL\n");
         scanf("%d", &op);
 
         switch(op){
@@ -1200,19 +1206,28 @@ void menuRelatorios(){
                 pacientesPorRede();
                 break;
             case 2:
-                redeMaisAtende();
+                medicosPorRede();
                 break;
             case 3:
-                faturamentoUnidade();
+                funcionariosPorRede();
                 break;
             case 4:
+                usuariosPorRede();
+                break;
+            case 5:
+                redeMaisAtende();
+                break;
+            case 6:
+                faturamentoUnidade();
+                break;
+            case 7:
                 break;
             default:
                 printf("Opcao: %d INVALIDA", op);
             break;
         }
     }
-    while(op!=4);
+    while(op!=7);
 
 }
 
@@ -1280,6 +1295,199 @@ void pacientesPorRede(){
     closedir(dir);
 }
 
+void medicosPorRede(){
+    
+    //VARIAVEIS
+    int op, cont = 0, i;
+    char unidade[MAX_SZ] = "";
+    char nomearquivo[MAX_SZ];
+    char verNomearquivo[MAX_SZ];
+    char caminho[MAX_SZ] = ".\\PIM_medicos\\";
+    DIR *dir;
+    struct dirent *lsdir;
+    
+    //LABEL DE VOLTA
+    volta:
+
+    //ENTRADA
+    system("cls");
+    printf("Digite a unidade: ");
+    scanf("%i", &op);
+
+    switch (op)
+    {
+    case 1:
+        strcat(unidade, "UNIDADE_1\\");
+        break;
+    case 2:
+        strcat(unidade, "UNIDADE_2\\");
+        break;
+    case 3:
+        strcat(unidade, "UNIDADE_3\\");
+        break;
+    default:
+        printf("OP invalida\n");
+        goto volta;
+        break;
+    }
+
+    //CAMINHO DA UNIDADE ESCOLHIDA
+    strcat(caminho, unidade);
+
+    //ABERTURA DA PASTA
+    dir = opendir(caminho);
+
+    // ESCREVE O NOME DOS ARQUIVOS
+    for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+    {
+        if (i >= 2)
+        {
+            strcpy(nomearquivo, lsdir->d_name);
+            strncpy(verNomearquivo, nomearquivo, strlen(nomearquivo) - 4);
+            printf (" --> %s\n", verNomearquivo);
+            cont++;
+        }
+    }
+    //SAIDA DE DADS
+    
+    printf("Quantidade de medicos na unidade %i eh: %i", op, cont);
+
+    //PAUSE
+    getch();
+
+    //FECHA A PASTA
+    closedir(dir);
+}
+
+void funcionariosPorRede(){
+    
+    //VARIAVEIS
+    int op, cont = 0, i;
+    char unidade[MAX_SZ] = "";
+    char nomearquivo[MAX_SZ];
+    char verNomearquivo[MAX_SZ];
+    char caminho[MAX_SZ] = ".\\PIM_funcionario\\";
+    DIR *dir;
+    struct dirent *lsdir;
+    
+    //LABEL DE VOLTA
+    volta:
+
+    //ENTRADA
+    system("cls");
+    printf("Digite a unidade: ");
+    scanf("%i", &op);
+
+    switch (op)
+    {
+    case 1:
+        strcat(unidade, "UNIDADE_1\\");
+        break;
+    case 2:
+        strcat(unidade, "UNIDADE_2\\");
+        break;
+    case 3:
+        strcat(unidade, "UNIDADE_3\\");
+        break;
+    default:
+        printf("OP invalida\n");
+        goto volta;
+        break;
+    }
+
+    //CAMINHO DA UNIDADE ESCOLHIDA
+    strcat(caminho, unidade);
+
+    //ABERTURA DA PASTA
+    dir = opendir(caminho);
+
+    // ESCREVE O NOME DOS ARQUIVOS
+    for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+    {
+        if (i >= 2)
+        {
+            strcpy(nomearquivo, lsdir->d_name);
+            strncpy(verNomearquivo, nomearquivo, strlen(nomearquivo) - 4);
+            printf (" --> %s\n", verNomearquivo);
+            cont++;
+        }
+    }
+    //SAIDA DE DADS
+    
+    printf("Quantidade de funcionarios na unidade %i eh: %i", op, cont);
+
+    //PAUSE
+    getch();
+
+    //FECHA A PASTA
+    closedir(dir);
+}
+
+void usuariosPorRede(){
+    
+    //VARIAVEIS
+    int op, cont = 0, i;
+    char unidade[MAX_SZ] = "";
+    char nomearquivo[MAX_SZ];
+    char verNomearquivo[MAX_SZ];
+    char caminho[MAX_SZ] = ".\\PIM_login\\";
+    DIR *dir;
+    struct dirent *lsdir;
+    
+    //LABEL DE VOLTA
+    volta:
+
+    //ENTRADA
+    system("cls");
+    printf("Digite a unidade: ");
+    scanf("%i", &op);
+
+    switch (op)
+    {
+    case 1:
+        strcat(unidade, "UNIDADE_1\\");
+        break;
+    case 2:
+        strcat(unidade, "UNIDADE_2\\");
+        break;
+    case 3:
+        strcat(unidade, "UNIDADE_3\\");
+        break;
+    default:
+        printf("OP invalida\n");
+        goto volta;
+        break;
+    }
+
+    //CAMINHO DA UNIDADE ESCOLHIDA
+    strcat(caminho, unidade);
+
+    //ABERTURA DA PASTA
+    dir = opendir(caminho);
+
+    // ESCREVE O NOME DOS ARQUIVOS
+    for(i = 0; ( lsdir = readdir(dir) ) != NULL; i++ )
+    {
+        if (i >= 2)
+        {
+            strcpy(nomearquivo, lsdir->d_name);
+            strncpy(verNomearquivo, nomearquivo, strlen(nomearquivo) - 4);
+            printf (" --> %s\n", verNomearquivo);
+            cont++;
+        }
+    }
+    //SAIDA DE DADS
+    
+    printf("Quantidade de usuarios na unidade %i eh: %i", op, cont);
+
+    //PAUSE
+    getch();
+
+    //FECHA A PASTA
+    closedir(dir);
+}
+
+
 void redeMaisAtende(){
 
     //VARIAVEIS
@@ -1344,9 +1552,11 @@ void redeMaisAtende(){
 
 void faturamentoUnidade(){
     //VARIAVEIS
-    int i, j, k = 0, l = 0;
-    float resultado[3];
-    char linha[MAX_SZ];
+    int i, j, k = 0, l = 0, cont;
+    int op;
+    float resultadoDias[3];
+    float resultadoMeses[3];
+    float media[3];
 
     //ponteiro para struct que armazena data e hora
     struct tm *data_hora_atual;
@@ -1364,6 +1574,8 @@ void faturamentoUnidade(){
     int diaAtual = data_hora_atual->tm_mday;
 
     int mesAtual = data_hora_atual->tm_mon + 1;
+
+    int mesAtualVerifica = data_hora_atual->tm_mon + 1;
 
 
     //VARIAVEIS DE PASTA
@@ -1392,6 +1604,23 @@ void faturamentoUnidade(){
 
 
     //ENTRADA
+    volta:
+    system("cls");
+    printf("\t\tFaturamento %i/%i\n", diaAtual, mesAtual);
+    printf("Deseja selecionar uma data especifica?\n");
+    printf("0 - Dia/Mes atual\t1 - escolher data especifica: ");
+    scanf("%i", &op);
+    if(op == 1){
+        printf("Dia: ");
+        scanf("%i", &diaAtual);
+        printf("Mes: ");
+        scanf("%i", &mesAtual);
+        if(mesAtual > mesAtualVerifica){
+            printf("DATA INVALIDA!!!!\n");
+            getch();
+            goto volta;
+        }
+    }
     //PROCESSAMENTO
 
     //ESTRUTURA DE REPEDIÇÃO
@@ -1420,38 +1649,37 @@ void faturamentoUnidade(){
                 arquivo = fopen(caminho, "rb");
 
                 while(fscanf(arquivo, "%i", &dias[k]) != EOF && fscanf(arquivo, "%i", &meses[k]) != EOF && fscanf(arquivo, "%f", &valores[k]) != EOF){
+                    //CALCULO DIA ATUAL:
+                    if(diaAtual == dias[k] && mesAtual == meses[k]){
+                        resultadoDias[l] += valores[k];
+                    }
 
-                    printf("dia: %i\n", dias[k]);
-                    printf("mes: %i\n", meses[k]);
-                    printf("valor: %f\n", valores[k]);
-                    getch();
+                    if(mesAtual == meses[k]){
+                        resultadoMeses[l] += valores[k];
+                        cont++;
+                    }
                     k++;
                 }
-
-                // if(diaAtual == data[0][0] && mesAtual == data[j][1]){
-                //     resultado[j] += valor[j][2];
-                //     printf("estrou\n");
-                //     printf("%f\n", resultado[j]);
-                // }
-
+                l++;
                 fclose(arquivo);
             }
         }
-        closedir(dir);
+    }
+    closedir(dir);
+
+    for(i = 0; i < 3; i++){
+        media[i] = resultadoMeses[i] / cont;
+
     }
 
-    //PROCESSAMENTO CALCULOS
-
     //SAIDA DE DADOS
+    system("cls");
+    printf("\t\tFaturamento %i/%i\n", diaAtual, mesAtual);
+    printf("\t\tDo dia\t\tDo mes\t\tMedia mes\n");
+    printf("Unidade 1:\t%.2f\t\t %.2f\t%.2f \n", resultadoDias[0], resultadoMeses[0], media[0]);
+    printf("Unidade 2:\t%.2f\t\t %.2f\t\t%.2f \n", resultadoDias[1], resultadoMeses[1], media[1]);
+    printf("Unidade 3:\t%.2f\t\t %.2f\t\t%.2f \n", resultadoDias[2], resultadoMeses[2], media[2]);
+    //PAUSE
     getch();
-    // system("cls");
-    // printf("\t\t\t\tFaturamento\n");
-    // printf("\t\tDo dia\t\tDo mes\n");
-    // printf("Unidade 1: \n");
-    // printf("Unidade 2: \n");
-    // printf("Unidade 3: \n");
-    // //PAUSE
-    // getch();
 }
-
 // ============ FIM MÓDULO RELATÓRIOS ================
